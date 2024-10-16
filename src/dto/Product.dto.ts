@@ -2,7 +2,7 @@
 
 export interface createProductInputs{
   name: string,
-  price: number,
+  price: string,
   category: string,
   color: string,
   weight: string

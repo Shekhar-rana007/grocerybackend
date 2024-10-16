@@ -129,9 +129,8 @@ export const searchProducts = async (req: Request, res: Response, next: NextFunc
 
 export const globalSearchProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { keyword } = req.query; // Capture the search keyword from query parameters
+    const { keyword } = req.query; 
 
-    // If no keyword is provided, return an error
     if (!keyword || typeof keyword !== 'string') {
       return res.status(400).json({
         message: "Please provide a valid search keyword",
@@ -139,34 +138,18 @@ export const globalSearchProducts = async (req: Request, res: Response, next: Ne
       });
     }
 
-    // Prepare the search filter
     const searchFilter = {
       $or: [
-        { name: { $regex: keyword, $options: "i" } }, // Search in name (case-insensitive)
-        { category: { $regex: keyword, $options: "i" } }, // Search in category
-        { color: { $regex: keyword, $options: "i" } }, // Search in color
-        { weight: { $regex: keyword, $options: "i" } }, // Search in weight
+        { name: { $regex: keyword, $options: "i" } }, 
+        { category: { $regex: keyword, $options: "i" } }, 
+        { color: { $regex: keyword, $options: "i" } }, 
+        { weight: { $regex: keyword, $options: "i" } }, 
+        { price: { $regex: keyword, $options: "i" } }, 
       ],
     };
 
-    // Check if the keyword is a valid number for the price field
-    const numericPrice = parseFloat(keyword as string);
-    if (!isNaN(numericPrice)) {
-      // If it is a valid number, add the price filter separately
-      const priceFilter = { price: numericPrice };
-      // Combine the search filter with price filter
-      const products = await product.find({ $or: [searchFilter.$or, priceFilter] });
-      return res.status(200).json({
-        message: `${products.length} product(s) found`,
-        success: true,
-        data: products,
-      });
-    }
-
-    // Fetch products that match the filter (excluding price)
     const products = await product.find(searchFilter);
 
-    // Check if any products are found
     if (products.length === 0) {
       return res.status(200).json({
         message: "No products found matching the search criteria",
