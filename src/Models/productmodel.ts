@@ -26,7 +26,6 @@ const productSchema = new Schema<ProductDoc>({
     });
 
 
-// Create the Mongoose model
 const product: Model<ProductDoc> = mongoose.model<ProductDoc>("product", productSchema);
 
 export default product;

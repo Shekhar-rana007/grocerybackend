@@ -1,5 +1,3 @@
-
-
 export interface createProductInputs{
   name: string,
   price: string,
