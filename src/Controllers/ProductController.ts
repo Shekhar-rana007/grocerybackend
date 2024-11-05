@@ -52,7 +52,6 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
 export const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const allProducts = await product.find();
-
     if (allProducts.length === 0) {
       return res.status(200).json({
         message: "No products found",
@@ -98,10 +97,8 @@ export const searchProducts = async (req: Request, res: Response, next: NextFunc
       searchFilter.weight = { $regex: weight, $options: "i" }; 
     }
 
-    // Fetch products from the database based on the search filters
     const products = await product.find(searchFilter);
 
-    // Check if products were found
     if (products.length === 0) {
       return res.status(200).json({
         message: "No products found",
@@ -110,7 +107,6 @@ export const searchProducts = async (req: Request, res: Response, next: NextFunc
       });
     }
 
-    // Return the found products
     return res.status(200).json({
       message: `${products.length} product(s) found`,
       success: true,
@@ -118,7 +114,6 @@ export const searchProducts = async (req: Request, res: Response, next: NextFunc
     });
 
   } catch (error) {
-    // Handle any errors
     return res.status(500).json({
       message: "An error occurred while searching for products",
       success: false,
@@ -158,7 +153,6 @@ export const globalSearchProducts = async (req: Request, res: Response, next: Ne
       });
     }
 
-    // Return the found products
     return res.status(200).json({
       message: `${products.length} product(s) found`,
       success: true,
@@ -166,7 +160,6 @@ export const globalSearchProducts = async (req: Request, res: Response, next: Ne
     });
 
   } catch (error) {
-    // Handle any errors
     return res.status(500).json({
       message: "An error occurred while searching for products",
       success: false,
